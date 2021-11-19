@@ -31,7 +31,7 @@ A utility for manipulating and creating Macintosh 68K drive images.
 Task              Aliases   Summary
 ----------------- --------- --------------------------------------------
 info                        Lists the summary info for the image.
-blockzero         bz
+blockzero         bz        Lists the zero block information.
 listpartitions    lp        Lists the partitions in the image.
 deletepartition   dp        Deletes the specified partition.
 checksum          hash, cs  Generates an MD5 checksum for a file.

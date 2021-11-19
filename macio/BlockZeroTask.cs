@@ -36,7 +36,7 @@ namespace MacIO
             return ExitCode.Success;
         }
 
-        protected override string? GeneralHelp
-            => "Lists the zero block information.";
+        public override string? Summary => "Lists the zero block information.";
+        protected override string? GeneralHelp => Resources.HelpBlockZero;
     }
 }

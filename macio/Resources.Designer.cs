@@ -61,6 +61,17 @@ namespace MacIO {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Lists drive image zero block information
+        ///
+        /// &gt; macio blockzero {driveImagePath}.
+        /// </summary>
+        internal static string HelpBlockZero {
+            get {
+                return ResourceManager.GetString("HelpBlockZero", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Creates a blank drive image of a specfied size
         ///
         /// &gt; macio createimage {driveImagePath} -size:{size}[KB|MB|GB]

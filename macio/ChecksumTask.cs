@@ -15,7 +15,7 @@ namespace MacIO
             return ExitCode.Success;
         }
 
-        public override string? Summary
-            => "Generates an MD5 checksum for a file.";
+        public override string? Summary => "Generates an MD5 checksum for a file.";
+        protected override string? GeneralHelp => Resources.HelpChecksum;
     }
 }

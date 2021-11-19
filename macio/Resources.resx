@@ -122,6 +122,13 @@
 
  &gt; macio blockzero {driveImagePath}</value>
   </data>
+  <data name="HelpChecksum" xml:space="preserve">
+    <value>Generates an MD5 checksum for the specified file
+
+ &gt; macio checksum {path}
+
+The result is a UUEncoded MD5 checksum.</value>
+  </data>
   <data name="HelpCreateImage" xml:space="preserve">
     <value>Creates a blank drive image of a specfied size
 
@@ -132,6 +139,16 @@ This creates an image with a 7.3.5 driver partition and a "Free" partition occup
   <data name="HelpCreateImageOptions" xml:space="preserve">
     <value>-size   The size of the image to create</value>
   </data>
+  <data name="HelpExtractDriver" xml:space="preserve">
+    <value>Extracts the specified driver
+
+ &gt; macio extractdriver {driveImagePath} [{destinationPath}] [index:{index}]
+
+This extracts only the bytes actually used by the given driver, not the entire driver partition. If {destinationPath} is not specified, will generate a filename. Will not overwrite existing files. Index defaults to zero.</value>
+  </data>
+  <data name="HelpExtractDriverOptions" xml:space="preserve">
+    <value>-index (-i) The driver index (as represented in block zero)</value>
+  </data>
   <data name="HelpExtractPartition" xml:space="preserve">
     <value>Extracts a partition to a file
 
@@ -141,6 +158,16 @@ If {destinationPath} is not specified, will generate a filename. Will not overwr
   </data>
   <data name="HelpExtractPartitionOptions" xml:space="preserve">
     <value>-index (-i) The partition to extract</value>
+  </data>
+  <data name="HelpHFSInfo" xml:space="preserve">
+    <value>Lists drive image zero block information
+
+ &gt; macio hfsinfo {driveOrVolumeImagePath} [-index:{index}]
+
+If the image has an expected zero block header then the given partition index is used. If the index isn't specified the first HFS partition is dumped. If the image is not a valid drive it is assumed to be an HFS volume.</value>
+  </data>
+  <data name="HelpHFSInfoOptions" xml:space="preserve">
+    <value>-index (-i) The partition to get info from</value>
   </data>
   <data name="HelpListPartitions" xml:space="preserve">
     <value>Lists drive image partition info

@@ -89,7 +89,8 @@ namespace MacIO
             return ExitCode.Success;
         }
 
-        public override string? Summary
-            => "Lists information for HFS volumes.";
+        public override string? Summary => "Lists information for HFS volumes.";
+        protected override string? GeneralHelp => Resources.HelpHFSInfo;
+        protected override string? OptionDetails => Resources.HelpHFSInfoOptions;
     }
 }

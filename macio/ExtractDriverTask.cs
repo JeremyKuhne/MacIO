@@ -39,7 +39,8 @@ namespace MacIO
             return ExitCode.Success;
         }
 
-        public override string? Summary
-            => "Extracts the specified driver code.";
+        public override string? Summary => "Extracts the specified driver code.";
+        protected override string? GeneralHelp => Resources.HelpExtractDriver;
+        protected override string? OptionDetails => Resources.HelpExtractDriverOptions;
     }
 }

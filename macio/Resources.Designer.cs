@@ -72,6 +72,19 @@ namespace MacIO {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Generates an MD5 checksum for the specified file
+        ///
+        /// &gt; macio checksum {path}
+        ///
+        ///The result is a UUEncoded MD5 checksum..
+        /// </summary>
+        internal static string HelpChecksum {
+            get {
+                return ResourceManager.GetString("HelpChecksum", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Creates a blank drive image of a specfied size
         ///
         /// &gt; macio createimage {driveImagePath} -size:{size}[KB|MB|GB]
@@ -94,6 +107,28 @@ namespace MacIO {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Extracts the specified driver
+        ///
+        /// &gt; macio extractdriver {driveImagePath} [{destinationPath}] [index:{index}]
+        ///
+        ///This extracts only the bytes actually used by the given driver, not the entire driver partition. If {destinationPath} is not specified, will generate a filename. Will not overwrite existing files. Index defaults to zero..
+        /// </summary>
+        internal static string HelpExtractDriver {
+            get {
+                return ResourceManager.GetString("HelpExtractDriver", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to -index (-i) The driver index (as represented in block zero).
+        /// </summary>
+        internal static string HelpExtractDriverOptions {
+            get {
+                return ResourceManager.GetString("HelpExtractDriverOptions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Extracts a partition to a file
         ///
         /// &gt; macio extractpartition {driveImagePath} [{destinationPath}] [-index:{index}]
@@ -112,6 +147,28 @@ namespace MacIO {
         internal static string HelpExtractPartitionOptions {
             get {
                 return ResourceManager.GetString("HelpExtractPartitionOptions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Lists drive image zero block information
+        ///
+        /// &gt; macio hfsinfo {driveOrVolumeImagePath} [-index:{index}]
+        ///
+        ///If the image has an expected zero block header then the given partition index is used. If the index isn&apos;t specified the first HFS partition is dumped. If the image is not a valid drive it is assumed to be an HFS volume..
+        /// </summary>
+        internal static string HelpHFSInfo {
+            get {
+                return ResourceManager.GetString("HelpHFSInfo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to -index (-i) The partition to get info from.
+        /// </summary>
+        internal static string HelpHFSInfoOptions {
+            get {
+                return ResourceManager.GetString("HelpHFSInfoOptions", resourceCulture);
             }
         }
         

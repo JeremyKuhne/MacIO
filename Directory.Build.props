@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <!-- Common repo directories -->
+  <PropertyGroup>
+    <RepoDir>$(MSBuildThisFileDirectory)</RepoDir>
+    <SourceDir>$(ProjectDir)src\</SourceDir>
+
+    <!-- Output directories -->
+    <BinDir Condition="'$(BinDir)'==''">$(RepoDir)artifacts\</BinDir>
+    <ObjDir Condition="'$(ObjDir)'==''">$(BinDir)obj\</ObjDir>
+
+    <!-- Input Directories -->
+    <PackagesDir Condition="'$(PackagesDir)'==''">$(RepoDir)packages\</PackagesDir>
+
+    <TargetFramework>net6.0</TargetFramework>
+    <!-- Enable this once XML comments are complete. -->
+    <!--<GenerateDocumentationFile>true</GenerateDocumentationFile>-->
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
+
+    <AssemblyVersion>0.1.0.0</AssemblyVersion>
+    <FileVersion>0.1.0.0</FileVersion>
+  </PropertyGroup>
+
+  <!-- Set up the default output and intermediate paths -->
+  <PropertyGroup>
+    <BaseOutputPath Condition="'$(BaseOutputPath)'==''">$(BinDir)</BaseOutputPath>
+    <OutputPath Condition="'$(OutputPath)'==''">$(BaseOutputPath)$(Platform)\$(Configuration)\$(MSBuildProjectName)\</OutputPath>
+
+    <!--
+        Putting the project at the root rather than after the platform/configuration allows usages of BaseIntermediateOutputPath
+        that implicitly expect it to be project isolated to work. $(ProjectAssetsFile) depends on this. (New to VS 2017)
+    -->
+    <BaseIntermediateOutputPath Condition="'$(BaseIntermediateOutputPath)'==''">$(ObjDir)$(MSBuildProjectName)\</BaseIntermediateOutputPath>
+    <IntermediateOutputRootPath Condition="'$(IntermediateOutputRootPath)' == ''">$(BaseIntermediateOutputPath)$(Platform)\$(Configuration)\</IntermediateOutputRootPath>
+    <IntermediateOutputPath Condition="'$(IntermediateOutputPath)' == ''">$(IntermediateOutputRootPath)\</IntermediateOutputPath>
+
+    <!--
+        Note that SDK targets add the target framework to $(IntermediateOutputPath) and $(OutputPath). (via Microsoft.NET.TargetFrameworkInference.targets)
+        $(AppendTargetFrameworkToOutputPath) can be used to skip this behavior.
+    -->
+  </PropertyGroup>
+</Project>

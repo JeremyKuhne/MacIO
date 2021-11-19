@@ -40,7 +40,7 @@ namespace MacIO
             return ExitCode.Success;
         }
 
-        public override string? Summary => "Extracts the specified partition";
+        public override string? Summary => "Extracts the specified partition.";
         protected override string? GeneralHelp =>  Resources.HelpExtractPartition;
         protected override string? OptionDetails => Resources.HelpExtractPartitionOptions;
     }

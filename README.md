@@ -36,7 +36,7 @@ listpartitions    lp        Lists the partitions in the image.
 deletepartition   dp        Deletes the specified partition.
 checksum          hash, cs  Generates an MD5 checksum for a file.
 extractdriver     ed        Extracts the specified driver code.
-extractpartition  ep        Extracts the specified partition
+extractpartition  ep        Extracts the specified partition.
 replacepartition  rp        Replaces a partition with a specified file.
 hfsinfo           hfs, hi   Lists information for HFS volumes.
 createimage       ci        Creates an empty image of the given size.

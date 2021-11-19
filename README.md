@@ -52,6 +52,8 @@ Option Details:
 -index (-i) Get detailed information for the specified partition
 ```
 
+See the [Wiki](https://github.com/JeremyKuhne/MacIO/wiki) for more information.
+
 ## Contributing ##
 Contribution is welcome for all changes that are free to be put under the current Copyright and license. Other changes will be considered as well.
 ## License ##

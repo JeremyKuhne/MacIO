@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Jeremy W. Kuhne. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
-using System.ComponentModel;
 using System.Diagnostics;
 using System.Globalization;
 
@@ -77,60 +76,51 @@ public static class Types
         }
         else
         {
-            // Not a primitive type that was requested- give the default TypeConverter a try
             try
             {
-                TypeConverter typeConverter = TypeDescriptor.GetConverter(type);
-                if (typeConverter is not null && typeConverter.CanConvertFrom(source.GetType()))
+                if (type.IsEnum && source is not null)
                 {
-                    return (T?)typeConverter.ConvertFrom(source);
-                }
-                else
-                {
-                    if (type.IsEnum && source is not null)
+                    try
                     {
-                        try
+                        T convertedEnum = (T)Enum.Parse(type, source.ToString() ?? string.Empty, ignoreCase: true);
+                        if (Enum.IsDefined(type, convertedEnum))
                         {
-                            T convertedEnum = (T)Enum.Parse(type, source.ToString() ?? string.Empty, ignoreCase: true);
-                            if (Enum.IsDefined(type, convertedEnum))
+                            return convertedEnum;
+                        }
+                        else
+                        {
+                            if (default(T) is null)
                             {
-                                return convertedEnum;
-                            }
-                            else
-                            {
-                                if (default(T) is null)
-                                {
-                                    // We were asked for a nullable enum, allow a null
-                                    return default;
-                                }
-
-                                Array values = Enum.GetValues(type);
-                                if (values.Length > 0)
-                                {
-                                    return (T?)values.GetValue(0);
-                                }
-
+                                // We were asked for a nullable enum, allow a null
                                 return default;
                             }
-                        }
-                        catch (Exception e)
-                        {
-                            if (e is InvalidCastException
-                                || e is ArgumentNullException
-                                || e is FormatException
-                                || e is OverflowException)
+
+                            Array values = Enum.GetValues(type);
+                            if (values.Length > 0)
                             {
-                                ConversionFailed(source, e);
+                                return (T?)values.GetValue(0);
                             }
-                            else
-                            {
-                                throw;
-                            }
+
+                            return default;
                         }
                     }
-
-                    Debug.WriteLine($"No converter found for type '{type}'");
+                    catch (Exception e)
+                    {
+                        if (e is InvalidCastException
+                            || e is ArgumentNullException
+                            || e is FormatException
+                            || e is OverflowException)
+                        {
+                            ConversionFailed(source, e);
+                        }
+                        else
+                        {
+                            throw;
+                        }
+                    }
                 }
+
+                Debug.WriteLine($"No converter found for type '{type}'");
             }
             catch (Exception e)
             {

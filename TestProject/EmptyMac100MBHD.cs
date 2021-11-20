@@ -16,3 +16,10 @@ public class EmptyHFS5MBHD : ImageFixture
     {
     }
 }
+
+public class EmptyProDOSImage : ImageFixture
+{
+    public EmptyProDOSImage() : base(@"TestAssets\ProDOS(32.0 MB Apple_PRODOS).zip")
+    {
+    }
+}

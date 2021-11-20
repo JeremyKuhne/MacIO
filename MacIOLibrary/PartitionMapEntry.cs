@@ -240,7 +240,7 @@ public class PartitionMapEntry : Record
         {
             fixed (byte* b = PartitionData.pmPartName)
             {
-                return GetNullTerminatedAsciiString(new(b, 32));
+                return FromNullTerminatedAsciiString(new(b, 32));
             }
         }
         set
@@ -265,45 +265,25 @@ public class PartitionMapEntry : Record
             {
                 ReadOnlySpan<byte> span = new(b, 32);
                 if (span.StartsWith(HierarchicalFileSystem))
-                {
                     return PartitionType.HierarchicalFileSystem;
-                }
                 else if (span.StartsWith(ProDOSFileSystem))
-                {
                     return PartitionType.ProDOSFileSystem;
-                }
                 else if (span.StartsWith(PartitionMap))
-                {
                     return PartitionType.PartitionMap;
-                }
                 else if (span.StartsWith(DeviceDriver))
-                {
                     return PartitionType.DeviceDriver;
-                }
                 else if (span.StartsWith(DeviceDriver43))
-                {
                     return PartitionType.DeviceDriver43;
-                }
                 else if (span.StartsWith(Empty))
-                {
                     return PartitionType.Empty;
-                }
                 else if (span.StartsWith(Unused))
-                {
                     return PartitionType.Unused;
-                }
                 else if (span.StartsWith(MacintoshFileSystem))
-                {
                     return PartitionType.MacintoshFileSystem;
-                }
                 else if (span.StartsWith(UnixFileSystem))
-                {
                     return PartitionType.UnixFileSystem;
-                }
                 else
-                {
                     return PartitionType.Unknown;
-                }
             }
         }
         set
@@ -357,9 +337,7 @@ public class PartitionMapEntry : Record
         get
         {
             fixed (byte* b = PartitionData.pmParType)
-            {
-                return GetNullTerminatedAsciiString(new(b, 32));
-            }
+                return FromNullTerminatedAsciiString(new(b, 32));
         }
         set
         {
@@ -494,7 +472,7 @@ public class PartitionMapEntry : Record
         {
             fixed (byte* b = PartitionData.pmProcessor)
             {
-                return GetNullTerminatedAsciiString(new(b, 16));
+                return FromNullTerminatedAsciiString(new(b, 16));
             }
         }
         set

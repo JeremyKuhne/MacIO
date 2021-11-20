@@ -117,6 +117,15 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="GeneralHelp" xml:space="preserve">
+    <value>A utility for manipulating and creating Macintosh 68K drive images.
+ (https://github.com/JeremyKuhne/MacIO)
+
+Basic usage:
+
+ &gt;macio {task} [parameters]
+ &gt;macio help {task}</value>
+  </data>
   <data name="HelpBlockZero" xml:space="preserve">
     <value>Lists drive image zero block information
 
@@ -132,9 +141,9 @@ The result is a UUEncoded MD5 checksum.</value>
   <data name="HelpCreateImage" xml:space="preserve">
     <value>Creates a blank drive image of a specfied size
 
- &gt; macio createimage {driveImagePath} -size:{size}[KB|MB|GB]
+ &gt; macio createimage {driveImagePath} -size:{size}[KB|MB|GB] [-prodos:{count}]
 
-This creates an image with a 7.3.5 driver partition and a "Free" partition occupying the rest of the drive.</value>
+This creates an image with a 7.3.5 driver partition, the specified number of ProDOS partitions, and "free" partitions occupying the rest of the drive. ProDOS partitions are the maximum size (32MB) and free partitions try to size to the recommended HFS size (2GB - 1MB).</value>
   </data>
   <data name="HelpCreateImageOptions" xml:space="preserve">
     <value>-size   The size of the image to create</value>

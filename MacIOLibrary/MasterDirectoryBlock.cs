@@ -34,12 +34,12 @@ public class MasterDirectoryBlock : Record
 
     public DateTime VolumeCreationTime
     {
-        get => GetHFSDate(BigEndian(_data.drCrDate));
+        get => FromHFSDate(BigEndian(_data.drCrDate));
     }
 
     public DateTime LastModificationTime
     {
-        get => GetHFSDate(BigEndian(_data.drLsMod));
+        get => FromHFSDate(BigEndian(_data.drLsMod));
     }
 
     public VolumeAttributes VolumeAttributes
@@ -101,13 +101,13 @@ public class MasterDirectoryBlock : Record
         get
         {
             fixed (byte* b = _data.drVN)
-                return GetPascalString(new(b, 28));
+                return FromPascalString(new(b, 28));
         }
     }
 
     public DateTime LastBackup
     {
-        get => GetHFSDate(BigEndian(_data.drVolBkUp));
+        get => FromHFSDate(BigEndian(_data.drVolBkUp));
     }
 
     public uint BackupSequenceNumber

@@ -34,6 +34,9 @@
     <None Include="..\TestAssets\FormattedEmptyHFS5MB.zip" Link="TestAssets\FormattedEmptyHFS5MB.zip">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="..\TestAssets\ProDOS(32.0 MB Apple_PRODOS).zip" Link="TestAssets\ProDOS(32.0 MB Apple_PRODOS).zip">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>

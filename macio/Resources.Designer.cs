@@ -61,6 +61,21 @@ namespace MacIO {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to A utility for manipulating and creating Macintosh 68K drive images.
+        /// (https://github.com/JeremyKuhne/MacIO)
+        ///
+        ///Basic usage:
+        ///
+        /// &gt;macio {task} [parameters]
+        /// &gt;macio help {task}.
+        /// </summary>
+        internal static string GeneralHelp {
+            get {
+                return ResourceManager.GetString("GeneralHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Lists drive image zero block information
         ///
         /// &gt; macio blockzero {driveImagePath}.
@@ -87,9 +102,9 @@ namespace MacIO {
         /// <summary>
         ///   Looks up a localized string similar to Creates a blank drive image of a specfied size
         ///
-        /// &gt; macio createimage {driveImagePath} -size:{size}[KB|MB|GB]
+        /// &gt; macio createimage {driveImagePath} -size:{size}[KB|MB|GB] [-prodos:{count}]
         ///
-        ///This creates an image with a 7.3.5 driver partition and a &quot;Free&quot; partition occupying the rest of the drive..
+        ///This creates an image with a 7.3.5 driver partition, the specified number of ProDOS partitions, and &quot;free&quot; partitions occupying the rest of the drive. ProDOS partitions are the maximum size (32MB) and free partitions try to size to the recommended HFS size (2GB - 1MB)..
         /// </summary>
         internal static string HelpCreateImage {
             get {

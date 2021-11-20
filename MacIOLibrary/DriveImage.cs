@@ -1,10 +1,17 @@
 ﻿// Copyright (c) Jeremy W. Kuhne. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
+using System.Diagnostics;
+using System.IO.Compression;
+
 namespace MacIO;
 
 public class DriveImage
 {
+    // The recommended maximum size for HFS partitions is 2GB - 1MB
+    // https://support.apple.com/kb/TA28860?locale=en_US
+    private const long RecommendedMaxParitionSize = (2L * 1024 * 1024 * 1024) - (1L * 1024 * 1024);
+
     private readonly Stream _stream;
     private BlockZero? _blockZero;
 
@@ -86,36 +93,69 @@ public class DriveImage
         }
     }
 
-    // The recommended maximum size for HFS partitions is 2GB - 1MB
-    // https://support.apple.com/kb/TA28860?locale=en_US
-    // private const long RecommendedMaxParitionSize = (2L * 1024 * 1024 * 1024) - (1 * 1024 * 1024);
+    private static uint BlockCount(long bytes, long blockSize)
+        => checked((uint)((bytes / blockSize) + (bytes % blockSize > 0 ? 1u : 0)));
 
-    public static DriveImage CreateEmptyImage(Stream stream, long sizeInBytes, params int[] partitionSizes)
+    public static DriveImage CreateEmptyImage(Stream stream, long sizeInBytes, uint proDOSPartitions = 0)
     {
+        if (sizeInBytes < 131072)
+            throw new ArgumentOutOfRangeException(nameof(sizeInBytes), "Image must be at least 128K");
+
         // Pick the smallest block size that can cover the full size of the drive.
         // (In multiples of 512 bytes.)
-        int blockSize = 512;
+        long blockSize = 512;
         while (blockSize * uint.MaxValue < sizeInBytes)
         {
             blockSize *= 2;
         }
 
-        // Round up the requested size to the nearest block if needed.
-        long partialBlock = sizeInBytes % blockSize;
-        if (partialBlock > 0)
-        {
-            sizeInBytes += blockSize - partialBlock;
-        }
-
+        uint numberOfBlocks = BlockCount(sizeInBytes, blockSize);
+        sizeInBytes = checked(blockSize * numberOfBlocks);
         stream.SetLength(sizeInBytes);
 
-        uint numberOfBlocks = checked((uint)(sizeInBytes / blockSize));
+        // Blocks used for block zero and the partition table.
+        const ushort ReservedBlocks = 64;
+        const ushort DriverPartitionBlocks = 32;
+        const ushort MaxPartitionEntries = 63;
+
+        // Grab the blank ProDOS image if we need it and calculate sizes.
+        bool hasProDOSParitions = proDOSPartitions > 0;
+        using Stream? proDOSZip = hasProDOSParitions
+            ? typeof(DriveImage).Assembly.GetManifestResourceStream("MacIOLibrary.Resources.ProDOS(32.0 MB Apple_PRODOS).zip")
+            : null;
+
+        Debug.Assert(!hasProDOSParitions || proDOSZip is not null);
+        var zipEntry = proDOSZip is not null ? new ZipArchive(proDOSZip).Entries[0] : null;
+        long proDOSLength = zipEntry?.Length ?? 0;
+        uint proDOSBlockCount = BlockCount(proDOSLength, blockSize);
+        uint totalProDOSBlocks = checked(proDOSBlockCount * proDOSPartitions);
+
+        // Figure out the number of free partitions to create.
+        uint remainingBlocksForBlankPartitions = numberOfBlocks - (ReservedBlocks + DriverPartitionBlocks);
+        if (remainingBlocksForBlankPartitions < totalProDOSBlocks)
+        {
+            throw new ArgumentOutOfRangeException(nameof(proDOSPartitions), "Not enough space for requested ProDOS partitions.");
+        }
+        remainingBlocksForBlankPartitions -= totalProDOSBlocks;
+
+        uint recommendedPartitionSizeInBlocks = BlockCount(RecommendedMaxParitionSize, blockSize);
+        uint blankPartitions = remainingBlocksForBlankPartitions < 1
+            ? 0
+            : Math.Max(1, remainingBlocksForBlankPartitions / recommendedPartitionSizeInBlocks);
+
+        // Plus 2 for the partition map entry and driver partition
+        uint totalPartitions = blankPartitions + proDOSPartitions + 2;
+
+        if (totalPartitions > MaxPartitionEntries)
+        {
+            throw new InvalidOperationException("Need more partition entries than are available.");
+        }
 
         // Set up the zero (boot) block.
         DriveImage image = new(stream, readOnly: false);
         var blockZero = image.BlockZero;
         blockZero.Signature = BlockZero.ValidSignature;
-        blockZero.NumberOfBlocks = checked((uint)numberOfBlocks);
+        blockZero.NumberOfBlocks = numberOfBlocks;
         blockZero.BlockSize = (ushort)blockSize;
 
         // No idea on why the next two reserved values are 1 on a Mac formatted drive.
@@ -124,7 +164,7 @@ public class DriveImage
 
         DriverIdentifier driver = new()
         {
-            StartingBlock = 64,
+            StartingBlock = ReservedBlocks,
             SizeInBlocks = 19,
             OperatingSystemType = 1
         };
@@ -133,7 +173,8 @@ public class DriveImage
         blockZero.Save();
 
         // Set up the partition map.
-        PartitionMapEntry partitionEntry = new(stream, 0, readOnly: false)
+        int partitionIndex = 0;
+        PartitionMapEntry partitionEntry = new(stream, partitionIndex++, readOnly: false)
         {
             Signature = PartitionMapEntry.ValidSignature,
             Type = PartitionType.PartitionMap,
@@ -142,11 +183,10 @@ public class DriveImage
             // HD SC Setup 7.3.5 reserves 63 blocks for the partition table.
             BlockCount = 63,
             DataCount = 63,
-            MapEntries = 3,
+            MapEntries = totalPartitions,
             Status = PartitionStatus.Valid | PartitionStatus.Allocated | PartitionStatus.InUse
                 | PartitionStatus.AllowsReading | PartitionStatus.AllowsWriting
         };
-
 
         partitionEntry.Save();
 
@@ -159,16 +199,16 @@ public class DriveImage
             throw new InvalidOperationException("Could not load driver data.");
         }
 
-        PartitionMapEntry driverEntry = new(stream, 1, readOnly: false)
+        PartitionMapEntry driverEntry = new(stream, partitionIndex++, readOnly: false)
         {
             Signature = PartitionMapEntry.ValidSignature,
             Type = PartitionType.DeviceDriver43,
             Name = "Macintosh",
-            PhysicalStart = 64,
+            PhysicalStart = ReservedBlocks,
             // HD SC Setup 7.3.5 reserves 32 blocks for the driver.
-            DataCount = 32,
-            BlockCount = 32,
-            MapEntries = 3,
+            DataCount = DriverPartitionBlocks,
+            BlockCount = DriverPartitionBlocks,
+            MapEntries = totalPartitions,
             // No idea how this is generated/validated
             BootChecksum = 63012,
             Status = PartitionStatus.Valid | PartitionStatus.Allocated | PartitionStatus.InUse
@@ -188,26 +228,74 @@ public class DriveImage
 
         driverEntry.Save();
 
-        stream.Seek(64 * blockSize, SeekOrigin.Begin);
+        stream.Seek((long)(ReservedBlocks * blockSize), SeekOrigin.Begin);
         driverStream.CopyTo(stream);
 
+        Debug.Assert(1 + driverEntry.BlockCount + partitionEntry.BlockCount == ReservedBlocks + DriverPartitionBlocks);
         uint usedBlocks = 1 + driverEntry.BlockCount + partitionEntry.BlockCount;
         uint remainingBlocks = numberOfBlocks - usedBlocks;
 
-        // Set up "free" entries to fill the remaining space.
-        PartitionMapEntry freeEntry = new(stream, 2, readOnly: false)
+        // Create our ProDOS partitions if needed
+        for (int i = 0; i < proDOSPartitions; i++)
         {
-            Signature = PartitionMapEntry.ValidSignature,
-            Type = PartitionType.Unused,
-            Name = "Unused",
-            PhysicalStart = usedBlocks,
-            DataCount = remainingBlocks,
-            BlockCount = remainingBlocks,
-            MapEntries = 3,
-            Status = PartitionStatus.Valid | PartitionStatus.Allocated,
-        };
+            // You can't seek a stream from a ZipEntry, it must be reopened.
+            Stream proDOSStream = zipEntry!.Open();
+            string name = $"ProDOS{i + 1}";
+            PartitionMapEntry proDOSEntry = new(stream, partitionIndex++, readOnly: false)
+            {
+                Signature = PartitionMapEntry.ValidSignature,
+                Type = PartitionType.ProDOSFileSystem,
+                Name = name,
+                PhysicalStart = usedBlocks,
+                DataCount = proDOSBlockCount,
+                BlockCount = proDOSBlockCount,
+                MapEntries = totalPartitions,
+                Status = PartitionStatus.Valid | PartitionStatus.Allocated | PartitionStatus.InUse
+                    | PartitionStatus.AllowsReading | PartitionStatus.AllowsWriting,
+            };
 
-        freeEntry.Save();
+            long position = usedBlocks * blockSize;
+            stream.Position = position;
+            proDOSStream.CopyTo(stream);
+
+            ProDOSVolume proDOSVolume = new(stream, position, readOnly: false);
+            proDOSVolume.Name = name;
+            proDOSVolume.CreationTime = DateTime.Now;
+
+            usedBlocks += proDOSBlockCount;
+            remainingBlocks -= proDOSBlockCount;
+
+            proDOSVolume.Save();
+            proDOSEntry.Save();
+        }
+
+        // Set up "free" entries to fill the remaining space.
+        uint blankPartitionSize = recommendedPartitionSizeInBlocks;
+        for (int i = 0; i < blankPartitions; i++)
+        {
+            if (i == blankPartitions - 1)
+            {
+                blankPartitionSize = remainingBlocks;
+            }
+
+            PartitionMapEntry freeEntry = new(stream, partitionIndex++, readOnly: false)
+            {
+                Signature = PartitionMapEntry.ValidSignature,
+                Type = PartitionType.Unused,
+                Name = $"Unused{i + 1}",
+                PhysicalStart = usedBlocks,
+                DataCount = blankPartitionSize,
+                BlockCount = blankPartitionSize,
+                MapEntries = totalPartitions,
+                Status = PartitionStatus.Valid | PartitionStatus.Allocated,
+            };
+
+            usedBlocks += blankPartitionSize;
+            remainingBlocks -= blankPartitionSize;
+            freeEntry.Save();
+        }
+
+        Debug.Assert(remainingBlocks == 0);
 
         return image;
     }

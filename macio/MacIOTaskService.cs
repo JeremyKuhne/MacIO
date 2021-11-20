@@ -9,7 +9,7 @@ namespace MacIO;
 public class MacIOTaskService : TaskService
 {
     private MacIOTaskService()
-        : base("A utility for manipulating and creating Macintosh 68K drive images.")
+        : base(Resources.GeneralHelp)
     {
     }
 

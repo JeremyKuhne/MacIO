@@ -43,7 +43,7 @@ public class BootBlockHeader : Record
         get
         {
             fixed (byte* b = HeaderData.bbSysName)
-                return GetPascalString(new(b, 16));
+                return FromPascalString(new(b, 16));
         }
     }
 
@@ -55,7 +55,7 @@ public class BootBlockHeader : Record
         get
         {
             fixed (byte* b = HeaderData.bbShellName)
-                return GetPascalString(new(b, 16));
+                return FromPascalString(new(b, 16));
         }
     }
 
@@ -67,7 +67,7 @@ public class BootBlockHeader : Record
         get
         {
             fixed (byte* b = HeaderData.bbDbg1Name)
-                return GetPascalString(new(b, 16));
+                return FromPascalString(new(b, 16));
         }
     }
 
@@ -79,7 +79,7 @@ public class BootBlockHeader : Record
         get
         {
             fixed (byte* b = HeaderData.bbDbg2Name)
-                return GetPascalString(new(b, 16));
+                return FromPascalString(new(b, 16));
         }
     }
 
@@ -91,7 +91,7 @@ public class BootBlockHeader : Record
         get
         {
             fixed (byte* b = HeaderData.bbScreenName)
-                return GetPascalString(new(b, 16));
+                return FromPascalString(new(b, 16));
         }
     }
 
@@ -103,7 +103,7 @@ public class BootBlockHeader : Record
         get
         {
             fixed (byte* b = HeaderData.bbHelloName)
-                return GetPascalString(new(b, 16));
+                return FromPascalString(new(b, 16));
         }
     }
 
@@ -116,7 +116,7 @@ public class BootBlockHeader : Record
         {
             fixed (byte* b = HeaderData.bbScrapName)
             {
-                return GetPascalString(new(b, 16));
+                return FromPascalString(new(b, 16));
             }
         }
     }

@@ -2,10 +2,12 @@
 
   <ItemGroup>
     <None Remove="Resources\Macintosh%28DeviceDriver43-Motorola68000-1%29" />
+    <None Remove="Resources\ProDOS%2832.0 MB Apple_PRODOS%29.zip" />
   </ItemGroup>
 
   <ItemGroup>
     <EmbeddedResource Include="Resources\Macintosh(DeviceDriver43-Motorola68000-1)" />
+    <EmbeddedResource Include="Resources\ProDOS(32.0 MB Apple_PRODOS).zip" />
   </ItemGroup>
 
   <ItemGroup>

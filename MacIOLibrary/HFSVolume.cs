@@ -3,9 +3,9 @@
 
 namespace MacIO;
 
-public class HFSPartition : Record
+public class HFSVolume : Record
 {
-    public HFSPartition(Stream stream, int partitionIndex, bool readOnly = true)
+    public HFSVolume(Stream stream, int partitionIndex, bool readOnly = true)
         : base(stream, readOnly)
     {
         BlockZero blockZero = new(stream);
@@ -28,11 +28,11 @@ public class HFSPartition : Record
         MasterDirectoryBlock = new(stream, position + 1024, readOnly);
     }
 
-    public HFSPartition(Stream stream, long location = 0, bool readOnly = true)
+    public HFSVolume(Stream stream, long position = 0, bool readOnly = true)
         : base(stream, readOnly)
     {
-        BootBlockHeader = new(stream, location, readOnly);
-        MasterDirectoryBlock = new(stream, location + 1024, readOnly);
+        BootBlockHeader = new(stream, position, readOnly);
+        MasterDirectoryBlock = new(stream, position + 1024, readOnly);
     }
 
     public BootBlockHeader BootBlockHeader { get; }

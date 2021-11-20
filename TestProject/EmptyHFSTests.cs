@@ -19,7 +19,7 @@ public class EmptyHFSTests : IClassFixture<EmptyHFS5MBHD>
         partitionEntry.Type.Should().Be(PartitionType.HierarchicalFileSystem);
 
         long position = partitionEntry.PhysicalStart * driveImage.BlockZero.BlockSize;
-        HFSPartition hfsPartition = new(stream, partitionIndex: 2);
+        HFSVolume hfsPartition = new(stream, partitionIndex: 2);
         string volumeName = hfsPartition.MasterDirectoryBlock.VolumeName;
     }
 }

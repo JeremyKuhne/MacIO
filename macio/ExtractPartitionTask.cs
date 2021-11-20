@@ -25,7 +25,8 @@ namespace MacIO
 
             var partition = map[index];
 
-            ushort blockSize = image.BlockZero.BlockSize;
+            // Making block size a long to help avoid overflow errors.
+            long blockSize = image.BlockZero.BlockSize;
 
             string size = FormatSize(partition.BlockCount * blockSize);
 
@@ -33,7 +34,10 @@ namespace MacIO
             StatusLog.WriteLine($"Extracting {size} \"{partition.Name}\" partition...");
 
             using Stream target = FileService.CreateFileStream(targetFile, FileMode.CreateNew, FileAccess.ReadWrite, FileShare.None);
-            target.CopyFrom(source, partition.PhysicalStart * blockSize, partition.BlockCount * blockSize);
+            target.CopyFrom(
+                source,
+                checked(partition.PhysicalStart * blockSize),
+                checked(partition.BlockCount * blockSize));
 
             ResultLog.WriteLine($"Extracted to: {targetFile}");
 

@@ -51,7 +51,7 @@ namespace MacIO
             if (partitionLength != source.Length)
             {
                 if (!ConsoleService.QueryYesNo(
-                    $"Replacement file {FormatSize(source.Length)} is smaller than destination partition {FormatSize(partitionLength)}. Replace?"))
+                    $"Replacement file {source.Length}({FormatSize(source.Length)}) is smaller than destination partition {partitionLength}({FormatSize(partitionLength)}). Replace?"))
                 {
                     return ExitCode.Canceled;
                 }
@@ -60,7 +60,7 @@ namespace MacIO
             // Check to see if we're trying to put an HFS volume in a non-HFS partition.
             if (partition.Type != PartitionType.HierarchicalFileSystem)
             {
-                HFSPartition hfs = new(source, location: 0);
+                HFSVolume hfs = new(source, position: 0);
                 if ((hfs.BootBlockHeader.Signature == BootBlockHeader.ValidSignature
                     || hfs.BootBlockHeader.Signature == 0)
                     && hfs.MasterDirectoryBlock.Signature == MasterDirectoryBlock.ValidSignature)

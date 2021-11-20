@@ -52,7 +52,7 @@ namespace MacIO
                 }
             }
 
-            HFSPartition hfs = new(stream, location: location, readOnly: true);
+            HFSVolume hfs = new(stream, position: location, readOnly: true);
 
             Table table = Table.Create(1, 1);
             table.HasHeader = false;

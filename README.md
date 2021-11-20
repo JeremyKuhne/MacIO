@@ -1,6 +1,6 @@
 # macio utility #
 
-"macio" is (.NET 6.0) cross-platform command-line tool and supporting library for working with older Macintosh volumes and drive images.
+"macio" is (.NET 6.0 based) cross-platform command-line tool and supporting library for working with older Macintosh volumes and drive images.
 It is intended to ease working with both physical machines and emulators and going between them, with a particular
 focus on SD card drive emulators.
 
@@ -15,18 +15,28 @@ curiosity. Feedback and participation is welcome.
 There is no GUI for this yet and I haven't quite decided what UI stack I intend to use when/if I start creating a GUI.
 
 ## Building ##
-Ensure you have the .NET 6.0 SDK installed. Either open the solution and build, or run `dotnet build -c release`.
+Building can be done on any platform .NET 6.0 supports (Mac, Linux, Windows). 
 
-I've created some self-contained, trimmed, "publish" targets for Windows x64 and OSX x64. Select the "macio" project
-and "Publish" from the "Build" menu in Visual Studio.
+To build from the command line ensure you have the [.NET 6.0 SDK](https://dotnet.microsoft.com/download/dotnet/6.0) installed. From the root of the project, simply run `dotnet build -c release`.
+The command line tool will output to `artifacts\AnyCPU\Release`.
+
+If you want to build self-contained single-file executables see ["Building Single File"](BuildingSingleFile.md).
+
+You can also build from [Visual Studio 2022](https://visualstudio.microsoft.com/vs/) by opening the `MacIO.sln`. I've created some self-contained, trimmed, "publish" targets for
+Windows x64 and OSX x64. Select the "macio" project and "Publish" from the "Build" menu in Visual Studio.
 
 ## Basics ##
 
 Run `macio` or `macio help` to get basic information.
 
 ```
->macio
 A utility for manipulating and creating Macintosh 68K drive images.
+ (https://github.com/JeremyKuhne/MacIO)
+
+Basic usage:
+
+ >macio {task} [parameters]
+ >macio help {task}
 
 Task              Aliases   Summary
 ----------------- --------- --------------------------------------------

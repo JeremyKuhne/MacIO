@@ -65,6 +65,6 @@ Option Details:
 See the [Wiki](https://github.com/JeremyKuhne/MacIO/wiki) for more information.
 
 ## Contributing ##
-Contribution is welcome for all changes that are free to be put under the current Copyright and license. Other changes will be considered as well.
+Contribution is welcome! Please respect the [Code of Conduct](CODE_OF_CONDUCT.md).
 ## License ##
 Released under the MIT license, see the LICENSE file for more information.

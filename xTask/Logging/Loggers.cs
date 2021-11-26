@@ -30,13 +30,9 @@ public class Loggers : ILoggers
     private class NullLogger : ILogger
     {
         public void Write(string value) { }
-        public void Write(string format, params object[] args) { }
-        public void Write(WriteStyle style, string format, params object[] args) { }
         public void Write(WriteStyle style, string value) { }
         public void WriteLine() { }
         public void WriteLine(string value) { }
-        public void WriteLine(string format, params object[] args) { }
-        public void WriteLine(WriteStyle style, string format, params object[] args) { }
         public void WriteLine(WriteStyle style, string value) { }
         public void Write(ITable table) { }
     }

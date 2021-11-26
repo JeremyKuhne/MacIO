@@ -22,7 +22,9 @@ public class EmptyProDOSTests : IClassFixture<EmptyProDOSImage>
     [Fact]
     public void ModifyVolumeInfo()
     {
-        using FileStream stream = File.Open(_image.ImagePath, FileMode.Open, FileAccess.ReadWrite);
+        string newPath = Path.Join(Path.GetDirectoryName(_image.ImagePath), Path.GetRandomFileName());
+        File.Copy(_image.ImagePath, newPath, overwrite: false);
+        using FileStream stream = File.Open(newPath, FileMode.Open, FileAccess.ReadWrite);
         ProDOSVolume volume = new(stream, position: 0, readOnly: false);
         volume.Name = "PRODOS1";
         DateTime dateTime = new(2020, 2, 4, 18, 04, 0);

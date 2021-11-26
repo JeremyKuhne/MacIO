@@ -24,6 +24,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\MacIOLibrary\MacIOLibrary.csproj" />
+    <ProjectReference Include="..\macio\macio.csproj" />
     <ProjectReference Include="..\xTask\xTask.csproj" />
   </ItemGroup>
 

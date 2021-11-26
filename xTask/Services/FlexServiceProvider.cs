@@ -17,7 +17,7 @@ public static class FlexServiceProvider
     {
         s_concreteServices = new SimpleServiceProvider();
         s_concreteServices.AddService<IFileService>(new FileService());
-        s_concreteServices.AddService<IConsoleService>(new ConcreteConsoleService());
+        s_concreteServices.AddService<IConsoleService>(new ConsoleService());
     }
 
     public static IServiceProvider Services => s_concreteServices;

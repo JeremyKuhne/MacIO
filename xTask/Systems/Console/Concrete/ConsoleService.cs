@@ -8,7 +8,7 @@ using System;
 /// <summary>
 ///  Simple thunk to <see cref="Console"/>.
 /// </summary>
-public class ConcreteConsoleService : IConsoleService
+public class ConsoleService : IConsoleService
 {
     private static readonly object s_SyncLock = new();
 

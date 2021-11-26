@@ -71,7 +71,7 @@ public class PartitionMapEntry : Record
 
         // First entry starts at physical block 1
         long position = PhysicalBlockSize + index * PhysicalBlockSize;
-        if (Stream.CanWrite && Stream.Length < position + PhysicalBlockSize)
+        if (Stream.CanWrite && stream.TryGetLength(out long length) && length < position + PhysicalBlockSize)
         {
             Stream.SetLength(position + PhysicalBlockSize);
         }

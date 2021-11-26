@@ -17,15 +17,15 @@ namespace MacIO
 
         protected sealed override ExitCode ExecuteInternal()
         {
-            ExitCode check = CheckPrerequisites();
-            if (check != ExitCode.Success)
+            ExitCode result = CheckPrerequisites();
+            if (result != ExitCode.Success)
             {
-                return check;
+                return result;
             }
 
             try
             {
-                ExecuteFileTask();
+                result = ExecuteFileTask();
             }
             catch (Exception e) when (e.IsIoException())
             {
@@ -33,7 +33,7 @@ namespace MacIO
                 return ExitCode.GeneralFailure;
             }
 
-            return ExitCode.Success;
+            return result;
         }
 
         protected virtual ExitCode CheckPrerequisites()

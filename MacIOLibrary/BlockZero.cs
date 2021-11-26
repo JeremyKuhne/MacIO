@@ -30,7 +30,7 @@ public partial class BlockZero : Record
     public BlockZero(Stream stream, bool readOnly = true)
         : base(stream, readOnly)
     {
-        if (Stream.CanWrite && stream.Length < MinimumSize)
+        if (Stream.CanWrite && stream.TryGetLength(out long length) && length < MinimumSize)
         {
             stream.SetLength(MinimumSize);
         }

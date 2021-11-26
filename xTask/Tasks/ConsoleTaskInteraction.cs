@@ -8,7 +8,7 @@ public sealed partial class ConsoleTaskInteraction : TaskInteraction
     private readonly Lazy<ConsoleTaskLoggers> _loggers;
 
     private ConsoleTaskInteraction(IArgumentProvider arguments, IServiceProvider services)
-        : base(arguments, services)
+        : base((arguments, services))
     {
         _loggers = new Lazy<ConsoleTaskLoggers>(() => new ConsoleTaskLoggers());
     }
@@ -16,5 +16,14 @@ public sealed partial class ConsoleTaskInteraction : TaskInteraction
     public static ITaskInteraction Create(IArgumentProvider arguments, IServiceProvider services)
         => new ConsoleTaskInteraction(arguments, services);
 
-    protected override ILoggers GetDefaultLoggers() => _loggers.Value;
+    public override object? GetService(Type serviceType)
+    {
+        object? result;
+        if ((result = base.GetService(serviceType)) is null && serviceType == typeof(ILoggers))
+        {
+            result = _loggers.Value;
+        }
+
+        return result;
+    }
 }

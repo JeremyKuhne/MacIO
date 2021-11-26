@@ -16,6 +16,29 @@ public class CreateImageTests
 
         DriveImage.CreateEmptyImage(stream, 5 * 1024 * 1024);
 
+        ValidateCreateImage(stream);
+    }
+
+    [Fact]
+    public void CreateImageTask()
+    {
+        using TestFileCleaner cleaner = new();
+        string imagePath = Path.Join(cleaner.TempFolder, Path.GetRandomFileName());
+        CreateImageTask task = new();
+        TestInteraction interaction = new("createimage", imagePath, "-size:5MB");
+        ExitCode exitCode = task.Execute(interaction);
+        exitCode.Should().Be(ExitCode.Success);
+
+        using FileStream stream = new(
+            imagePath,
+            FileMode.Open,
+            FileAccess.Read);
+
+        ValidateCreateImage(stream);
+    }
+
+    private void ValidateCreateImage(Stream stream)
+    {
         DriveImage image = new(stream);
         var blockZero = image.BlockZero;
         blockZero.Signature.Should().Be(BlockZero.ValidSignature);

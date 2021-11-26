@@ -113,7 +113,7 @@ public class HeaderParseTests : IClassFixture<EmptyMac100MBHD>
 
         // Startup information is the first two blocks of the volume.
         MasterDirectoryBlock directory = new(stream, 512 * (entry.PhysicalStart + 2));
-        directory.VolumeName.Should().Be("Blank 100M");
+        directory.VolumeName.Should().Be("Blank 100MB");
         directory.VolumeCreationTime.Should().Be(new DateTime(2021, 1, 8, 20, 1, 37, DateTimeKind.Local));
         directory.LastModificationTime.Should().Be(new DateTime(2021, 1, 8, 20, 12, 10, DateTimeKind.Local));
         directory.UnusedAllocationBlocks.Should().Be(60396);

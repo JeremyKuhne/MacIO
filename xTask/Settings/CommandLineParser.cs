@@ -1,8 +1,6 @@
 ﻿// Copyright (c) Jeremy W. Kuhne. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
-using xTask.Systems.File;
-
 namespace xTask;
 
 /// <summary>
@@ -15,7 +13,7 @@ public class CommandLineParser : ArgumentProvider
     {
     }
 
-    public void Parse(string[] arguments)
+    public void Parse(params string[] arguments)
     {
         if (arguments is null || arguments.Length == 0)
         {

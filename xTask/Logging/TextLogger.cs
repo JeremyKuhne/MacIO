@@ -10,10 +10,7 @@ public class TextLogger : TextTableLogger
 {
     private readonly StringBuilder _text = new(4096);
 
-    protected override int TableWidth
-    {
-        get { return 120; }
-    }
+    protected override int TableWidth => 120;
 
     protected override void WriteInternal(WriteStyle style, string value)
     {
@@ -27,8 +24,5 @@ public class TextLogger : TextTableLogger
         }
     }
 
-    public override string ToString()
-    {
-        return _text.ToString();
-    }
+    public override string ToString() => _text.ToString();
 }

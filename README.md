@@ -1,6 +1,6 @@
 # macio utility #
 
-"macio" is (.NET 6.0 based) cross-platform command-line tool and supporting library for working with older Macintosh volumes and drive images.
+"macio" is (.NET 8.0 based) cross-platform command-line tool and supporting library for working with older Macintosh volumes and drive images.
 It is intended to ease working with both physical machines and emulators and going between them, with a particular
 focus on SD card drive emulators.
 
@@ -15,9 +15,9 @@ curiosity. Feedback and participation is welcome.
 There is no GUI for this yet and I haven't quite decided what UI stack I intend to use when/if I start creating a GUI.
 
 ## Building ##
-Building can be done on any platform .NET 6.0 supports (Mac, Linux, Windows). 
+Building can be done on any platform .NET 8.0 supports (Mac, Linux, Windows). 
 
-To build from the command line ensure you have the [.NET 6.0 SDK](https://dotnet.microsoft.com/download/dotnet/6.0) installed. From the root of the project, simply run `dotnet build -c release`.
+To build from the command line ensure you have the [.NET 8.0 SDK](https://dotnet.microsoft.com/download/dotnet/8.0) installed. From the root of the project, simply run `dotnet build -c release`.
 The command line tool will output to `artifacts\AnyCPU\Release`.
 
 If you want to build self-contained single-file executables see ["Building Single File"](BuildingSingleFile.md).

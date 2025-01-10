@@ -10,7 +10,7 @@ public partial class ProDOSVolume : Record
     private readonly byte[] _bootLoaderImage = new byte[512 * 2];
     private readonly byte[] _volumeDirectoryKeyBlock = new byte[512];
     private ref VolumeHeader VolumeData
-        => ref Unsafe.As<byte, VolumeHeader>(ref Unsafe.AsRef(_volumeDirectoryKeyBlock[4]));
+        => ref Unsafe.As<byte, VolumeHeader>(ref Unsafe.AsRef(in _volumeDirectoryKeyBlock[4]));
 
     private readonly long _position;
 

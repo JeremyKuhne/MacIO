@@ -48,7 +48,7 @@ public class PartitionMapEntry : Record
     public const ushort OldSignature = 0x5453;
 
     private readonly byte[] _data;
-    private ref Partition PartitionData => ref Unsafe.As<byte, Partition>(ref Unsafe.AsRef(_data[0]));
+    private ref Partition PartitionData => ref Unsafe.As<byte, Partition>(ref Unsafe.AsRef(in _data[0]));
 
     private int PhysicalBlockSize { get; }
 
@@ -81,89 +81,89 @@ public class PartitionMapEntry : Record
     }
 
     // "Apple_partition_map"
-    private static ReadOnlySpan<byte> PartitionMap => new byte[]
-        {
-            (byte)'A', (byte)'p', (byte)'p', (byte)'l', (byte)'e', (byte)'_',
-            (byte)'p', (byte)'a', (byte)'r', (byte)'t', (byte)'i', (byte)'t', (byte)'i', (byte)'o', (byte)'n', (byte)'_',
-            (byte)'m', (byte)'a', (byte)'p', (byte)'\0'
-        };
+    private static ReadOnlySpan<byte> PartitionMap =>
+    [
+        (byte)'A', (byte)'p', (byte)'p', (byte)'l', (byte)'e', (byte)'_',
+        (byte)'p', (byte)'a', (byte)'r', (byte)'t', (byte)'i', (byte)'t', (byte)'i', (byte)'o', (byte)'n', (byte)'_',
+        (byte)'m', (byte)'a', (byte)'p', (byte)'\0'
+    ];
 
     // "Apple_Driver"
-    private static ReadOnlySpan<byte> DeviceDriver => new byte[]
-        {
-            (byte)'A', (byte)'p', (byte)'p', (byte)'l', (byte)'e', (byte)'_',
-            (byte)'D', (byte)'r', (byte)'i', (byte)'v', (byte)'e', (byte)'r', (byte)'\0'
-        };
+    private static ReadOnlySpan<byte> DeviceDriver =>
+    [
+        (byte)'A', (byte)'p', (byte)'p', (byte)'l', (byte)'e', (byte)'_',
+        (byte)'D', (byte)'r', (byte)'i', (byte)'v', (byte)'e', (byte)'r', (byte)'\0'
+    ];
 
     // "Apple_Driver43"
-    private static ReadOnlySpan<byte> DeviceDriver43 => new byte[]
-        {
-            (byte)'A', (byte)'p', (byte)'p', (byte)'l', (byte)'e', (byte)'_',
-            (byte)'D', (byte)'r', (byte)'i', (byte)'v', (byte)'e', (byte)'r',  (byte)'4', (byte)'3', (byte)'\0'
-        };
+    private static ReadOnlySpan<byte> DeviceDriver43 =>
+    [
+        (byte)'A', (byte)'p', (byte)'p', (byte)'l', (byte)'e', (byte)'_',
+        (byte)'D', (byte)'r', (byte)'i', (byte)'v', (byte)'e', (byte)'r',  (byte)'4', (byte)'3', (byte)'\0'
+    ];
 
     // "Apple_MFS"
-    private static ReadOnlySpan<byte> MacintoshFileSystem => new byte[]
-        {
-            (byte)'A', (byte)'p', (byte)'p', (byte)'l', (byte)'e', (byte)'_',
-            (byte)'M', (byte)'F', (byte)'S', (byte)'\0'
-        };
+    private static ReadOnlySpan<byte> MacintoshFileSystem =>
+    [
+        (byte)'A', (byte)'p', (byte)'p', (byte)'l', (byte)'e', (byte)'_',
+        (byte)'M', (byte)'F', (byte)'S', (byte)'\0'
+    ];
 
     // "Apple_HFS"
-    private static ReadOnlySpan<byte> HierarchicalFileSystem => new byte[]
-        {
-            (byte)'A', (byte)'p', (byte)'p', (byte)'l', (byte)'e', (byte)'_',
-            (byte)'H', (byte)'F', (byte)'S', (byte)'\0'
-        };
+    private static ReadOnlySpan<byte> HierarchicalFileSystem =>
+    [
+        (byte)'A', (byte)'p', (byte)'p', (byte)'l', (byte)'e', (byte)'_',
+        (byte)'H', (byte)'F', (byte)'S', (byte)'\0'
+    ];
 
     // "Apple_Unix_SVR2"
-    private static ReadOnlySpan<byte> UnixFileSystem => new byte[]
-        {
-            (byte)'A', (byte)'p', (byte)'p', (byte)'l', (byte)'e', (byte)'_',
-            (byte)'U', (byte)'n', (byte)'i', (byte)'x', (byte)'_',
-            (byte)'S', (byte)'V', (byte)'R', (byte)'2', (byte)'\0'
-        };
+    private static ReadOnlySpan<byte> UnixFileSystem =>
+    [
+        (byte)'A', (byte)'p', (byte)'p', (byte)'l', (byte)'e', (byte)'_',
+        (byte)'U', (byte)'n', (byte)'i', (byte)'x', (byte)'_',
+        (byte)'S', (byte)'V', (byte)'R', (byte)'2', (byte)'\0'
+    ];
 
     // "Apple_PRODOS"
-    private static ReadOnlySpan<byte> ProDOSFileSystem => new byte[]
-        {
-            (byte)'A', (byte)'p', (byte)'p', (byte)'l', (byte)'e', (byte)'_',
-            (byte)'P', (byte)'R', (byte)'O', (byte)'D', (byte)'O', (byte)'S', (byte)'\0'
-        };
+    private static ReadOnlySpan<byte> ProDOSFileSystem =>
+    [
+        (byte)'A', (byte)'p', (byte)'p', (byte)'l', (byte)'e', (byte)'_',
+        (byte)'P', (byte)'R', (byte)'O', (byte)'D', (byte)'O', (byte)'S', (byte)'\0'
+    ];
 
     // "Apple_Free"
-    private static ReadOnlySpan<byte> Unused => new byte[]
-        {
-            (byte)'A', (byte)'p', (byte)'p', (byte)'l', (byte)'e', (byte)'_',
-            (byte)'F', (byte)'r', (byte)'e', (byte)'e', (byte)'\0'
-        };
+    private static ReadOnlySpan<byte> Unused =>
+    [
+        (byte)'A', (byte)'p', (byte)'p', (byte)'l', (byte)'e', (byte)'_',
+        (byte)'F', (byte)'r', (byte)'e', (byte)'e', (byte)'\0'
+    ];
 
     // "Apple_Scratch"
-    private static ReadOnlySpan<byte> Empty => new byte[]
-        {
-            (byte)'A', (byte)'p', (byte)'p', (byte)'l', (byte)'e', (byte)'_',
-            (byte)'S', (byte)'c', (byte)'r', (byte)'a', (byte)'t', (byte)'c',  (byte)'h', (byte)'\0'
-        };
+    private static ReadOnlySpan<byte> Empty =>
+    [
+        (byte)'A', (byte)'p', (byte)'p', (byte)'l', (byte)'e', (byte)'_',
+        (byte)'S', (byte)'c', (byte)'r', (byte)'a', (byte)'t', (byte)'c',  (byte)'h', (byte)'\0'
+    ];
 
-    private static ReadOnlySpan<byte> Motorola68000 => new byte[]
-        {
-            (byte)'6', (byte)'8', (byte)'0', (byte)'0', (byte)'0', (byte)'\0'
-        };
+    private static ReadOnlySpan<byte> Motorola68000 =>
+    [
+        (byte)'6', (byte)'8', (byte)'0', (byte)'0', (byte)'0', (byte)'\0'
+    ];
 
-    private static ReadOnlySpan<byte> Motorola68020 => new byte[]
-        {
-            (byte)'6', (byte)'8', (byte)'0', (byte)'2', (byte)'0', (byte)'\0'
-        };
+    private static ReadOnlySpan<byte> Motorola68020 =>
+    [
+        (byte)'6', (byte)'8', (byte)'0', (byte)'2', (byte)'0', (byte)'\0'
+    ];
 
-    private static ReadOnlySpan<byte> Motorola68030 => new byte[]
-        {
-            (byte)'6', (byte)'8', (byte)'0', (byte)'3', (byte)'0', (byte)'\0'
-        };
+    private static ReadOnlySpan<byte> Motorola68030 =>
+    [
+        (byte)'6', (byte)'8', (byte)'0', (byte)'3', (byte)'0', (byte)'\0'
+    ];
 
-    private static ReadOnlySpan<byte> Motorola68040 => new byte[]
-        {
-            (byte)'6', (byte)'8', (byte)'0', (byte)'4', (byte)'0', (byte)'\0'
-        };
+    private static ReadOnlySpan<byte> Motorola68040 =>
+    [
+        (byte)'6', (byte)'8', (byte)'0', (byte)'4', (byte)'0', (byte)'\0'
+    ];
 
 
     /// <summary>

@@ -25,7 +25,7 @@ public partial class BlockZero : Record
     private const int MinimumSize = 512;
 
     private readonly byte[] _data = new byte[MinimumSize];
-    private ref Block0 BlockData => ref Unsafe.As<byte, Block0>(ref Unsafe.AsRef(_data[0]));
+    private ref Block0 BlockData => ref Unsafe.As<byte, Block0>(ref Unsafe.AsRef(in _data[0]));
 
     public BlockZero(Stream stream, bool readOnly = true)
         : base(stream, readOnly)

@@ -14,7 +14,7 @@ public class BootBlockHeader : Record
 
     // Logical blocks are always 512bytes inside an HFS partition.
     private readonly byte[] _data = new byte[1024];
-    private ref BootBlkHdr HeaderData => ref Unsafe.As<byte, BootBlkHdr>(ref Unsafe.AsRef(_data[0]));
+    private ref BootBlkHdr HeaderData => ref Unsafe.As<byte, BootBlkHdr>(ref Unsafe.AsRef(in _data[0]));
 
     private readonly long _startPosition;
 

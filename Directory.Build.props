@@ -12,7 +12,7 @@
     <!-- Input Directories -->
     <PackagesDir Condition="'$(PackagesDir)'==''">$(RepoDir)packages\</PackagesDir>
 
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <!-- Enable this once XML comments are complete. -->
     <!--<GenerateDocumentationFile>true</GenerateDocumentationFile>-->
     <ImplicitUsings>enable</ImplicitUsings>
